@@ -3,6 +3,18 @@
 use Illuminate\Support\Str;
 use Pdo\Mysql;
 
+$pgUrl = env('DB_URL', env('DATABASE_URL'));
+if ($pgUrl && !getenv('PGOPTIONS')) {
+    $pgHost = parse_url((string) $pgUrl, PHP_URL_HOST);
+    if (is_string($pgHost) && str_ends_with($pgHost, '.neon.tech')) {
+        $endpoint = explode('.', $pgHost)[0] ?? '';
+        $endpoint = preg_replace('/-pooler$/', '', $endpoint);
+        if ($endpoint !== '') {
+            @putenv('PGOPTIONS=endpoint=' . $endpoint);
+        }
+    }
+}
+
 return [
 
     /*

@@ -39,6 +39,7 @@
         "QUEUE_CONNECTION": "sync",
         "LOG_CHANNEL": "stderr",
         "DB_CONNECTION": "pgsql",
+        "DB_PORT": "5432",
         "DB_SSLMODE": "require",
         "CLOUDINARY_FOLDER": "klan-munadi",
         "ADMIN_USERNAME": "admin"
