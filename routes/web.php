@@ -60,33 +60,6 @@ Route::middleware('admin')->group(function () {
 });
 
 // Fallback aman untuk file storage publik lokal
-Route::get('/db-status', function () {
-    $url = config('database.connections.pgsql.url');
-    $parsedHost = is_string($url) && $url !== '' ? parse_url($url, PHP_URL_HOST) : null;
-    try {
-        $count = \App\Models\FamilyMember::count();
-        return response()->json([
-            'ok' => true,
-            'pdo_pgsql' => extension_loaded('pdo_pgsql'),
-            'db_default' => config('database.default'),
-            'db_url_set' => !empty($url),
-            'db_host' => $parsedHost,
-            'members_count' => $count,
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'ok' => false,
-            'pdo_pgsql' => extension_loaded('pdo_pgsql'),
-            'db_default' => config('database.default'),
-            'db_url_set' => !empty($url),
-            'db_host' => $parsedHost,
-            'pgoptions' => getenv('PGOPTIONS') ?: null,
-            'error_class' => get_class($e),
-            'error_message' => preg_replace('#://[^@]+@#', '://***:***@', $e->getMessage()),
-        ], 500);
-    }
-});
-
 Route::get('/storage/{path}', function (string $path) {
     $baseDir = realpath(storage_path('app/public'));
     if ($baseDir === false) {
